@@ -1,0 +1,7 @@
+{
+    "name": "webgl-learning-lab",
+    "private": true,
+    "scripts": {
+      "dev": "pnpm --filter main dev"
+    }
+  }
