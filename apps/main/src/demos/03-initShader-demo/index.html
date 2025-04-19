@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <!-- 顶点着色器 -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+      attribute vec2 aPosition;
+      void main() {
+          gl_PointSize = 10.0;
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+      }
+    </script>
+    <!-- 片元着色器 -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+      void main() {
+          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }
+    </script>
+    <script type="module">
+      import initShader from "@/utils/initShader.js"
+      const canvas = document.getElementById("canvas")
+
+      const gl = canvas.getContext("webgl")
+      const program = initShader(gl)
+      // 三个顶点
+      const vertices = new Float32Array([0.0, 1.0, -1.0, -1.0, 1.0, -1.0])
+      // 创建顶点缓冲区
+      const buffer = gl.createBuffer()
+      // 把buffer绑定到WebGL的`ARRAY_BUFFER`目标上, 接下来的操作将会作用在这个缓冲区上
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+      // 将顶点数据存储到当前绑定的缓冲区上
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
+
+      // 设置顶点属性
+      const positionLocation = gl.getAttribLocation(program, "aPosition")
+      // 启用顶点属性
+      gl.enableVertexAttribArray(positionLocation)
+      // 指定如何解析数组
+      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
+      gl.drawArrays(gl.TRIANGLES, 0, 3) // 绘制三角形
+    </script>
+  </body>
+</html>

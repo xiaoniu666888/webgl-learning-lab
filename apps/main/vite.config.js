@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite'
+import path from 'path'
 
 export default defineConfig({
-  root: './',  // 直接以当前目录为根
+  root: './',
+  resolve: {
+    alias: {
+      '@/utils': path.join(__dirname, '../../packages/utils')
+    }
+  },
   server: {
-    open: true,  // 自动打开浏览器
-    port: 8080,  // 端口号
+    open: true,
+    port: 8080,
   }
 })
